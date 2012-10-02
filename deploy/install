@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Create symlink from approot/htdocs to temp directory
+#--------------------------------
+if [ ! -e "/usr/clearos/apps/smart_monitor/htdocs/graphs" ]; then
+    /bin/ln -s /var/clearos/smart_monitor /usr/clearos/apps/smart_monitor/htdocs/graphs
+fi
+
+# Add to sudoers for local backup
+#-------------------------------
+if ! grep "/usr/sbin/smartctl" /etc/sudoers > /dev/null; then
+    /usr/bin/logger -p local6.notice -t installer "Adding SMART monitor sudoers entry"
+    # append to sudoers CC entry for smartctl
+    /bin/sed -i -e "/Cmnd_Alias CC/s/$/, \/usr\/sbin\/smartctl/g" /etc/sudoers
+    /bin/chmod 0440 /etc/sudoers
+fi
+
