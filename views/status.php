@@ -99,18 +99,18 @@ $graphkeys = array(
 ///////////////////////////////////////////////////////////////////////////////
 
 //get all drives list
-$drives = $this->smart_monitor->GetDrives();
+$drives = $this->smart_monitor->get_drives();
 
 // display drive stats
 foreach ($drives as $drive){
 
-    $check = $this->smart_monitor->GetDriveInfo($drive);
+    $check = $this->smart_monitor->get_drive_info($drive);
 
     //only display those with SMART enabled
     if($check['enabled']){
         $data['drive'] = $drive;
         $gdata['drive'] = $drive;
-        $output = $this->smart_monitor->GetSmartData($drive);
+        $output = $this->smart_monitor->get_smart_data($drive);
         $drivename = ltrim($drive,'/dev/');
 
 	//generate raw data
@@ -123,7 +123,7 @@ foreach ($drives as $drive){
         
             //generate graphs on the fly, for now use all keys
             try {
-                $this->smart_monitor->DrawGraph($values,$item,$drivename);
+                $this->smart_monitor->draw_graph($values,$item,$drivename);
             }  catch (Exception $e) {
                 $this->page->view_exception($e);
             }
@@ -145,7 +145,7 @@ foreach ($drives as $drive){
         $graphrows[] = $graphrow;
 
         //drive logs
-        $log = $this->smart_monitor->GetDriveLog($drive);
+        $log = $this->smart_monitor->get_drive_log($drive);
         $table[$drive] = $log;
     }
 }

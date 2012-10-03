@@ -53,11 +53,11 @@ $headers = array(
 // Row Data
 ///////////////////////////////////////////////////////////////////////////////
 
-$drives = $this->smart_monitor->GetDrives();
+$drives = $this->smart_monitor->get_drives();
 
 foreach ($drives as $drive){
     //find out drive information
-    $check = $this->smart_monitor->GetDriveInfo($drive);
+    $check = $this->smart_monitor->get_drive_info($drive);
 
     if($check['available']){
         $available = lang('smart_available');
@@ -75,13 +75,13 @@ foreach ($drives as $drive){
         $state_anchor = 'anchor_' . $state;
         $item['anchors'] = $state_anchor('/app/smart_monitor/' . $state . '/' . $drive, 'high');
         //determine test status
-        $teststatus = $this->smart_monitor->GetTestStatus($drive);
+        $teststatus = $this->smart_monitor->get_test_status($drive);
         if($teststatus['running']){
             $test = $teststatus['status']; //"In Progress";
         } else {				
             $test = anchor_custom('/app/smart_monitor/start_test/' . $drive, 'Start');
         }
-        $assessment = $this->smart_monitor->GetHealth($drive);
+        $assessment = $this->smart_monitor->get_health($drive);
 			
     } else {
         $item['anchors'] = "N/A";

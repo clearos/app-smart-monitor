@@ -67,13 +67,13 @@ class Attributes extends ClearOS_Controller
 
         $data['drive'] = "/$dev/$drive";
 
-        $data['attributes'] = $this->smart_monitor->GetSmartAttributes($data['drive']);
+        $data['attributes'] = $this->smart_monitor->get_smart_attributes($data['drive']);
         //echo json_encode($data['attributes']);
 
         // Load views
         //-----------
- 
-	$options['type'] = 'report';
+
+        $options['type'] = 'report';
         $this->page->view_form('smart_monitor/attributes', $data, lang('base_settings'), $options);
     }
 }

@@ -2,9 +2,9 @@
 
 # Create symlink from approot/htdocs to temp directory
 #--------------------------------
-if [ ! -e "/usr/clearos/apps/smart_monitor/htdocs/graphs" ]; then
-    /bin/ln -s /var/clearos/smart_monitor /usr/clearos/apps/smart_monitor/htdocs/graphs
-fi
+#if [ ! -e "/usr/clearos/apps/smart_monitor/htdocs/graphs" ]; then
+#    /bin/ln -s /var/clearos/smart_monitor /usr/clearos/apps/smart_monitor/htdocs/graphs
+#fi
 
 # Add to sudoers for local backup
 #-------------------------------

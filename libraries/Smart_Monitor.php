@@ -115,7 +115,7 @@ class Smart_Monitor extends Engine
     /**
      * Function to determine drives 
      */
-    public function GetDrives()
+    public function get_drives()
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -125,11 +125,11 @@ class Smart_Monitor extends Engine
         $retval = $shell->get_output();
         
         $count = 0;
-        foreach ($retval as $line){
-            if(preg_match('/\b[sh]d[a-z]\b/',$line)){
+        foreach ($retval as $line) {
+            if (preg_match('/\b[sh]d[a-z]\b/', $line)) {
                 $line2 = " ".$line;
-                $line2 = preg_replace('/\s+/m','|',$line2);
-                $pieces = explode("|",$line2);
+                $line2 = preg_replace('/\s+/m', '|', $line2);
+                $pieces = explode("|", $line2);
                 $drives[$count] = "/dev/" . $pieces[4];
                 $count++;
             }
@@ -140,71 +140,71 @@ class Smart_Monitor extends Engine
     /**
       * Function to determine drive attributes
      */
-    public function GetSmartData($drive)
+    public function get_smart_data($drive)
     {
         clearos_profile(__METHOD__, __LINE__);
 
         $shell = new Shell();
         $args = '-A ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
-        foreach ($retval as $line){
+        foreach ($retval as $line) {
             $line2 = " ".$line;
-            $line2 = preg_replace('/\s+/m','|',$line2);
-            $pieces = explode("|",$line2);
+            $line2 = preg_replace('/\s+/m', '|', $line2);
+            $pieces = explode("|", $line2);
 
-            if($pieces[1]=='194'){
+            if ($pieces[1]=='194') {
                 $field = 'Temp';
-                # fudge for odd raw values which contain hours and minutes
+                // fudge for odd raw values which contain hours and minutes
                 $output[$field]['Raw'] = $pieces[10].$pieces[11].$pieces[12].$pieces[13].$pieces[14];
                 $output[$field]['T'] = $pieces[6];
                 $output[$field]['W'] = $pieces[5];
                 $output[$field]['V'] = $pieces[4];
             }
-            if($pieces[1]=='1'){
+            if ($pieces[1]=='1') {
                 $field = 'RawReadErrorRate';
                 $output[$field]['Raw'] = $pieces[10];
                 $output[$field]['T'] = $pieces[6];
                 $output[$field]['W'] = $pieces[5];
                 $output[$field]['V'] = $pieces[4];
             }
-            if($pieces[1]=='12'){
+            if ($pieces[1]=='12') {
                 $field ='PowerCycle';
                 $output[$field]['Raw'] = $pieces[10];
                 $output[$field]['T'] = $pieces[6];
                 $output[$field]['W'] = $pieces[5];
                 $output[$field]['V'] = $pieces[4];
-            }
-            if($pieces[1]=='9'){
+            } 
+            if ($pieces[1]=='9') {
                 $field = 'PowerOnHours';
                 $output[$field]['Raw'] = $pieces[10];
                 $output[$field]['T'] = $pieces[6];
                 $output[$field]['W'] = $pieces[5];
                 $output[$field]['V'] = $pieces[4];
             }
-            if($pieces[1]=='7'){
+            if ($pieces[1]=='7') {
                 $field = 'SeekErrorRate';
                 $output[$field]['Raw'] = $pieces[10];
                 $output[$field]['T'] = $pieces[6];
                 $output[$field]['W'] = $pieces[5];
                 $output[$field]['V'] = $pieces[4];
             }
-            if($pieces[1]=='5'){
+            if ($pieces[1]=='5') {
                 $field = 'ReAllocSector';
                 $output[$field]['Raw'] = $pieces[10];
                 $output[$field]['T'] = $pieces[6];
                 $output[$field]['W'] = $pieces[5];
                 $output[$field]['V'] = $pieces[4];
             }
-            if($pieces[1]=='10'){
+            if ($pieces[1]=='10') {
                 $field = 'SpinRetryCnt';
                 $output[$field]['Raw'] = $pieces[10];
                 $output[$field]['T'] = $pieces[6];
                 $output[$field]['W'] = $pieces[5];
                 $output[$field]['V'] = $pieces[4];
             }
-            if($pieces[1]=='3'){
+            if ($pieces[1]=='3') {
                 $field = 'SpinUpTime';
                 $output[$field]['Raw'] = $pieces[10];
                 $output[$field]['T'] = $pieces[6];
@@ -218,13 +218,13 @@ class Smart_Monitor extends Engine
     /**
      * Function to determine drive attributes
      */
-    public function GetSmartAttributes($drive)
+    public function get_smart_attributes($drive)
     {
         clearos_profile(__METHOD__, __LINE__);
 
         $shell = new Shell();
         $args = '--attributes ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
         return $retval;
@@ -233,19 +233,19 @@ class Smart_Monitor extends Engine
     /**
       * Function to determine drive health
      */
-    public function GetHealth($drive)
+    public function get_health($drive)
     {
  
         clearos_profile(__METHOD__, __LINE__);
         $shell = new Shell();
         $args = '-H ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
-        foreach ($retval as $line){
-            if(preg_match('/test result/',$line)){
+        foreach ($retval as $line) {
+            if (preg_match('/test result/', $line)) {
                 $line2 = " ".$line;
-                $pieces = explode(":",$line2);
+                $pieces = explode(":", $line2);
                 $output = trim($pieces[1]);
             }
         }
@@ -255,28 +255,28 @@ class Smart_Monitor extends Engine
     /**
      * Function to determine test status, true if running
      */
-    public function GetTestStatus($drive)
+    public function get_test_status($drive)
     {
 
         clearos_profile(__METHOD__, __LINE__);
 
         $shell = new Shell();
         $args = '-c ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
         $count = 0;
-        foreach ($retval as $line){
-            if($count==1){
+        foreach ($retval as $line) {
+            if ($count==1) {
                 $output['status'] .= "<br>" .$line;
                 $count = 0;
             }
-            if(preg_match('/Self-test execution status/',$line)){
+            if (preg_match('/Self-test execution status/', $line)) {
                 $line2 = " ".$line;
-                $line2 = preg_replace('/\s+/m',"|",$line2);
-                $pieces = explode("|",$line2);
+                $line2 = preg_replace('/\s+/m',"|", $line2);
+                $pieces = explode("|", $line2);
                 $value = trim($pieces[5]);
-                if($value!=0){
+                if ($value!=0) {
                     $output['running'] = true;
                     $output['status'] = substr($line,40);
                     $count = 1;
@@ -293,55 +293,56 @@ class Smart_Monitor extends Engine
     /**
       * Function to determine drive Information
      */
-    public function GetDriveInfo($drive)
+    public function get_drive_info($drive)
     {
         clearos_profile(__METHOD__, __LINE__);
     
         $shell = new Shell();
         $args = '-i ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $options['validate_exit_code'] = FALSE;
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
-        foreach ($retval as $line){
-            if(preg_match('/SMART support is/',$line)){
-                 $line2 = " ".$line;
-                 $pieces = explode(":",$line2);
-                 $support = trim($pieces[1]);
-                 if(preg_match('/Available/',$support))
-                     $output['available'] = true;
-                 if(preg_match('/Enabled/',$support))
-                     $output['enabled'] = true;
-             }
-             if(preg_match('/Device supports SMART/',$line)){
-                 $output['available'] = true;
-                 if(preg_match('/and is Enabled/',$line))
-                     $output['enabled'] = true;
-             }
-             if(preg_match('/Model Family/',$line)){
-                 $line2 = " ".$line;
-                 $pieces = explode(":",$line2);
-                 $value = trim($pieces[1]);
-                 $output['model'] = $value;
-             }
-             if(preg_match('/Device Model/',$line)){
-                 $line2 = " ".$line;
-                 $pieces = explode(":",$line2);
-                 $value = trim($pieces[1]);
-                 $output['device'] = $value;
-             }
-             if(preg_match('/Serial Number/',$line)){
-                 $line2 = " ".$line;
-                 $pieces = explode(":",$line2);
-                 $value = trim($pieces[1]);
-                 $output['serial'] = $value;
-             }
-             if(preg_match('/User Capacity/',$line)){
-                 $line2 = " ".$line;
-                 $line2 = preg_replace('/\s+/m',"|",$line);
-                 $pieces = explode("|",$line2);
-                 $value = preg_replace('/,/','',$pieces[2]);
-                 $output['capacity'] = round($value/(1000*1000*1000));
-             }
+        foreach ($retval as $line) {
+            if (preg_match('/SMART support is/', $line)) {
+                $line2 = " ".$line;
+                $pieces = explode(":", $line2);
+                $support = trim($pieces[1]);
+                if(preg_match('/Available/', $support))
+                    $output['available'] = TRUE;
+                if(preg_match('/Enabled/', $support))
+                    $output['enabled'] = TRUE;
+            }
+            if (preg_match('/Device supports SMART/', $line)) {
+                $output['available'] = TRUE;
+                if (preg_match('/and is Enabled/', $line))
+                    $output['enabled'] = TRUE;
+            }
+            if (preg_match('/Model Family/', $line)) {
+                $line2 = " ".$line;
+                $pieces = explode(":", $line2);
+                $value = trim($pieces[1]);
+                $output['model'] = $value;
+            }
+            if (preg_match('/Device Model/', $line)) {
+                $line2 = " ".$line;
+                $pieces = explode(":", $line2);
+                $value = trim($pieces[1]);
+                $output['device'] = $value;
+            } 
+            if (preg_match('/Serial Number/', $line)) {
+                $line2 = " ".$line;
+                $pieces = explode(":", $line2);
+                $value = trim($pieces[1]);
+                $output['serial'] = $value;
+            }
+            if (preg_match('/User Capacity/', $line)) {
+                $line2 = " ".$line;
+                $line2 = preg_replace('/\s+/m', "|", $line);
+                $pieces = explode("|", $line2);
+                $value = preg_replace('/,/','', $pieces[2]);
+                $output['capacity'] = round($value/(1000*1000*1000));
+            }
         }
         return $output;
     }
@@ -349,22 +350,22 @@ class Smart_Monitor extends Engine
     /**
       * Function to determine drive SMART self tests
      */
-    public function GetDriveLog($drive)
+    public function get_drive_log($drive)
     {
 
         clearos_profile(__METHOD__, __LINE__);
  
         $shell = new Shell();
         $args = '--log=selftest ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
-        foreach ($retval as $line){
-            if(preg_match('/^#/',$line)){
-                $found=true;
-                $num = substr($line,0,3);
-                $line2 = preg_replace('/\s\s+/m',"|",$line);
-                $pieces = explode("|",$line2);
+        foreach ($retval as $line) {
+            if (preg_match('/^#/', $line)) {
+                $found=TRUE;
+                $num = substr($line, 0, 3);
+                $line2 = preg_replace('/\s\s+/m', "|", $line);
+                $pieces = explode("|", $line2);
                 $data['details'] = array(
                     'Num' => $num,
                     'Description' => $pieces[1],
@@ -382,14 +383,14 @@ class Smart_Monitor extends Engine
     /**
       * Function to initiate drive self test (short)
      */
-    public function StartShortTest($drive)
+    public function start_short_test($drive)
     {
 
         clearos_profile(__METHOD__, __LINE__);
       
         $shell = new Shell();
         $args = '--test=short ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $output = $shell->get_output();
     
         return $output;
@@ -398,13 +399,13 @@ class Smart_Monitor extends Engine
     /**
       * Function to enable SMART
      */
-    public function EnableSmart($drive)
+    public function enable_smart($drive)
     {
         clearos_profile(__METHOD__, __LINE__); 
 
         $shell = new Shell();
         $args = '--smart=on ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $output = $shell->get_output();
     
         return $output;
@@ -413,13 +414,13 @@ class Smart_Monitor extends Engine
     /**
       * Function to disable SMART
      */
-    public function DisableSmart($drive)
+    public function disable_smart($drive)
     {
         clearos_profile(__METHOD__, __LINE__);
  
         $shell = new Shell();
         $args = '--smart=off ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, true, $options);
+        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $output = $shell->get_output();
 
         return $output;
@@ -429,15 +430,15 @@ class Smart_Monitor extends Engine
       * Function to draw graphs (associative array)
      */
     
-    public function DrawGraph($values,$filename,$drivename)
+    public function draw_graph($values,$filename,$drivename)
     {
 
-    # ------- The graph values in the form of associative array --Debug Only
-    /*$values=array(
-        "T" => 060,
-        "W" => 130,
-        "V" => 200,
-    );*/
+        // ------- The graph values in the form of associative array --Debug Only
+        /*$values=array(
+            "T" => 060,
+            "W" => 130,
+            "V" => 200,
+        );*/
 
  
         $img_width=54;
@@ -445,8 +446,8 @@ class Smart_Monitor extends Engine
         $margins=0;
         $topmargin=15;
         $bottommargin=15;
-
-    # ---- Find the size of graph by substracting the size of borders
+    
+        // ---- Find the size of graph by substracting the size of borders
         $graph_width=$img_width - $margins * 2;
         $graph_height=$img_height- $margins * 2; 
         $img=imagecreate($img_width,$img_height);
@@ -455,37 +456,37 @@ class Smart_Monitor extends Engine
         $total_bars=count($values);
         $gap= ($graph_width- $total_bars * $bar_width ) / ($total_bars +1);
 
+
+        // -------  Define Colors ----------------
+        $bar_color = imagecolorallocate($img, 107, 142, 35);
+        $background_color = imagecolorallocate($img, 240, 240, 255);
+        $border_color = imagecolorallocate($img, 240, 240 ,255);
+        $line_color = imagecolorallocate($img, 220, 220, 220);
  
-    # -------  Define Colors ----------------
-        $bar_color=imagecolorallocate($img,107,142,35);
-        $background_color=imagecolorallocate($img,240,240,255);
-        $border_color=imagecolorallocate($img,240,240,255);
-        $line_color=imagecolorallocate($img,220,220,220);
+        // ------ Create the border around the graph ------
+        imagefilledrectangle($img, 1, 1, $img_width-2, $img_height-2, $border_color);
+        imagefilledrectangle($img, $margins, $margins, $img_width-1-$margins, $img_height-1-$margins, $background_color);
  
-    # ------ Create the border around the graph ------
-        imagefilledrectangle($img,1,1,$img_width-2,$img_height-2,$border_color);
-        imagefilledrectangle($img,$margins,$margins,$img_width-1-$margins,$img_height-1-$margins,$background_color);
- 
-    # ------- Max value is required to adjust the scale    -------
+        // ------- Max value is required to adjust the scale    -------
         $max_value=max($values);
         $ratio= ($graph_height-$bottommargin-$topmargin)/$max_value;
 
-    # -------- Create scale and draw horizontal lines  --------
-    # Horiz bars not required
+        // -------- Create scale and draw horizontal lines  --------
+        // Horiz bars not required
         $horizontal_lines=0;
-    /*$horizontal_gap=$graph_height/$horizontal_lines;
+        /*$horizontal_gap=$graph_height/$horizontal_lines;
 
-    for($i=1;$i<=$horizontal_lines;$i++){
-        $y=$img_height - $margins - $horizontal_gap * $i ;
-        imageline($img,$margins,$y,$img_width-$margins,$y,$line_color);
-        $v=intval($horizontal_gap * $i /$ratio);
-        imagestring($img,0,5,$y-5,$v,$bar_color);
+        for($i=1;$i<=$horizontal_lines;$i++){
+            $y=$img_height - $margins - $horizontal_gap * $i ;
+            imageline($img,$margins,$y,$img_width-$margins,$y,$line_color);
+            $v=intval($horizontal_gap * $i /$ratio);
+            imagestring($img,0,5,$y-5,$v,$bar_color);
 
-    }*/
+        }*/
  
-    # ----------- Draw the bars here ------
-        for($i=0;$i< $total_bars; $i++){ 
-        # ------ Extract key and value pair from the current pointer position
+        // ----------- Draw the bars here ------
+        for ($i=0; $i< $total_bars; $i++) {  
+        // ------ Extract key and value pair from the current pointer position
         list($key,$value)=each($values); 
         $x1= $margins + $gap + $i * ($gap+$bar_width) ;
         $x2= $x1 + $bar_width; 
@@ -495,8 +496,8 @@ class Smart_Monitor extends Engine
         imagestring($img,0,$x1+4,$img_height-10,$key,$bar_color);        
         imagefilledrectangle($img,$x1,$y1,$x2,$y2,$bar_color);
     }
-    //header("Content-type:image/png");
-    # dump graphs in temporary folder
+        //header("Content-type:image/png");
+        // dump graphs in temporary folder
         imagepng($img,'/var/clearos/smart_monitor/graph_'.$drivename.'_'.$filename.'.png',0);
     
     }

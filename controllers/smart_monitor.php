@@ -53,14 +53,14 @@ class Smart_Monitor extends ClearOS_Controller
 
         // Load libraries
         //---------------
-	$this->lang->load('smart_monitor');
-	$this->lang->load('base');
-	$this->load->library('smart_monitor/Smart_Monitor');
+        $this->lang->load('smart_monitor');
+        $this->lang->load('base');
+        $this->load->library('smart_monitor/Smart_Monitor');
 
         // Load views 
         //--------------
 
-	$views = array('smart_monitor/server', 'smart_monitor/drives', 'smart_monitor/status');
+        $views = array('smart_monitor/server', 'smart_monitor/drives', 'smart_monitor/status');
 
         $this->page->view_forms($views, lang('smart_monitor_appname'));
     }
@@ -80,7 +80,7 @@ class Smart_Monitor extends ClearOS_Controller
         $path = "/$dev/$drive";
 
         try{
-            $this->smart_monitor->EnableSmart($path);
+            $this->smart_monitor->enable_smart($path);
 
             // Return to summary page with status message
             $this->page->set_status_added();
@@ -107,7 +107,7 @@ class Smart_Monitor extends ClearOS_Controller
         $path = "/$dev/$drive";
 
         try{
-            $this->smart_monitor->DisableSmart($path);
+            $this->smart_monitor->disable_smart($path);
 
             // Return to summary page with status message
             $this->page->set_status_added();
@@ -135,7 +135,7 @@ class Smart_Monitor extends ClearOS_Controller
         $path = "/$dev/$drive";
 
         try{
-            $this->smart_monitor->StartShortTest($path);
+            $this->smart_monitor->start_short_test($path);
 
             // Return to summary page with status message
             $this->page->set_status_added();

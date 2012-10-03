@@ -62,8 +62,8 @@ class Status extends ClearOS_Controller
 
         // Load views
         //-----------
- 
-	//$options['type'] = 'report';
+
+        //$options['type'] = 'report';
         $this->page->view_form('smart_monitor/status', $data, lang('base_settings'), $options);
     }
 }
