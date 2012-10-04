@@ -114,6 +114,8 @@ class Smart_Monitor extends Engine
 
     /**
      * Function to determine drives 
+     * 
+     * @return array
      */
     public function get_drives()
     {
@@ -138,7 +140,11 @@ class Smart_Monitor extends Engine
     }
 
     /**
-      * Function to determine drive attributes
+     * Function to determine drive attributes
+     * 
+     * @param string $drive drive
+     *
+     * @return array of drive attributes
      */
     public function get_smart_data($drive)
     {
@@ -217,6 +223,10 @@ class Smart_Monitor extends Engine
 
     /**
      * Function to determine drive attributes
+     *
+     * @param string $drive drive
+     *
+     * @return array
      */
     public function get_smart_attributes($drive)
     {
@@ -231,7 +241,11 @@ class Smart_Monitor extends Engine
     }
 
     /**
-      * Function to determine drive health
+     * Function to determine drive health
+     *
+     * @param string $drive drive
+     *
+     * @return string
      */
     public function get_health($drive)
     {
@@ -254,6 +268,10 @@ class Smart_Monitor extends Engine
 
     /**
      * Function to determine test status, true if running
+     *
+     * @param string $drive drive
+     *
+     * @return string test result
      */
     public function get_test_status($drive)
     {
@@ -291,7 +309,11 @@ class Smart_Monitor extends Engine
 
 
     /**
-      * Function to determine drive Information
+     * Function to determine drive Information
+     *
+     * @param string $drive drive
+     *
+     * @return array drive info
      */
     public function get_drive_info($drive)
     {
@@ -348,7 +370,11 @@ class Smart_Monitor extends Engine
     }
 
     /**
-      * Function to determine drive SMART self tests
+     * Function to determine drive SMART self tests
+     *
+     * @param string $drive drive
+     *
+     * @return array drive log
      */
     public function get_drive_log($drive)
     {
@@ -381,7 +407,11 @@ class Smart_Monitor extends Engine
     }
 
     /**
-      * Function to initiate drive self test (short)
+     * Function to initiate drive self test (short)
+     *
+     * @param string $drive drive
+     *
+     * @return void
      */
     public function start_short_test($drive)
     {
@@ -397,7 +427,11 @@ class Smart_Monitor extends Engine
     }
 
     /**
-      * Function to enable SMART
+     * Function to enable SMART
+     *
+     * @param string $drive drive
+     *
+     * @return void
      */
     public function enable_smart($drive)
     {
@@ -412,7 +446,11 @@ class Smart_Monitor extends Engine
     }
 
     /**
-      * Function to disable SMART
+     * Function to disable SMART
+     *
+     * @param string $drive drive
+     *
+     * @return void
      */
     public function disable_smart($drive)
     {
@@ -427,7 +465,13 @@ class Smart_Monitor extends Engine
     }
 
     /**
-      * Function to draw graphs (associative array)
+     * Function to draw graphs (associative array)
+     *
+     * @param string $values    array of bar values
+     * @param string $filename  filename
+     * @param string $drivename drive name
+     *
+     * @return void
      */
     
     public function draw_graph($values,$filename,$drivename)
