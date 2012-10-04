@@ -45,3 +45,4 @@ $lang['smart_attributes_updated'] = 'Updated';
 $lang['smart_attributes_when_failed'] = 'When Failed';
 $lang['smart_attributes_raw'] = 'Raw';
 $lang['smart_details'] = 'Details';
+$lang['smart_log'] = 'Test Log';

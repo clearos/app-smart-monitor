@@ -59,14 +59,6 @@ $graphheaders = array(
     lang('smart_spinuptime'),
     lang('smart_spinretrycnt')
 );
-$logheaders = array(
-    lang('smart_num'),
-    lang('smart_test_description'),
-    lang('smart_status'),
-    lang('smart_remaining'),
-    lang('smart_lifetime'),
-    lang('smart_LBA_of_first_error')
-);
 
 $keys = array(
     "Temp",
@@ -92,7 +84,6 @@ $graphkeys = array(
     "SpinUpTime",
     "SpinRetryCnt"
 );
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Row Data
@@ -136,21 +127,24 @@ foreach ($drives as $drive) {
         foreach ($graphkeys as $item) {
             $gdata[$item] = "<img src='/approot/smart_monitor/htdocs/graphs/graph_" . $drivename ."_". $item . ".png' />";
         }
+
+        $buttons = button_set(
+            array(
+                anchor_custom('/app/smart_monitor/attributes/index' . $drive, lang('smart_details')),
+                anchor_custom('/app/smart_monitor/logs/index' . $drive, lang('smart_log'))
+            )
+        );
+
         $row['details'] = $data;
-        $row['anchors'] = anchor_custom('/app/smart_monitor/attributes/index' . $drive, lang('smart_details'));
+        $row['anchors'] = $buttons;
         $graphrow['details'] = $gdata;
         
         //append to array for table
         $rows[] = $row;
         $graphrows[] = $graphrow;
 
-        //drive logs
-        $log = $this->smart_monitor->get_drive_log($drive);
-        $table[$drive] = $log;
     }
 }
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Sumary tables
@@ -171,15 +165,4 @@ if ($rows != NULL) {
         $graphrows
     );
 }
-
-foreach ($table as $key => $value) {
-    echo summary_table(
-        lang('smart_logs_title') . ' ' . $key,
-        NULL,
-        $logheaders,
-        $value
-    );
-}
-
-
 
