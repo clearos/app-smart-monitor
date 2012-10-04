@@ -4,7 +4,7 @@
  * SMART Monitor config view.
  *
  * @category   Apps
- * @package    Smart_monitor
+ * @package    SMART_Monitor
  * @subpackage Views
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation
@@ -55,40 +55,40 @@ $headers = array(
 
 $drives = $this->smart_monitor->get_drives();
 
-foreach ($drives as $drive){
+foreach ($drives as $drive) {
     //find out drive information
     $check = $this->smart_monitor->get_drive_info($drive);
 
-    if($check['available']){
+    if ($check['available']) {
         $available = lang('smart_available');
     } else {
         $available = lang('smart_notavailable');
     }
-    if($check['available'] && !$check['enabled']){
+    if ($check['available'] && !$check['enabled']) {
         $state = ($check['enabled']) ? 'disable' : 'enable';
         $state_anchor = 'anchor_' . $state;
         $item['anchors'] = $state_anchor('/app/smart_monitor/' . $state . '/' . $drive, 'high');
         $test = "N/A";
         $assessment = "N/A";
-    } elseif($check['available'] && $check['enabled']) {
+    } elseif ($check['available'] && $check['enabled']) {
         $state = ($check['enabled']) ? 'disable' : 'enable';
         $state_anchor = 'anchor_' . $state;
         $item['anchors'] = $state_anchor('/app/smart_monitor/' . $state . '/' . $drive, 'high');
         //determine test status
         $teststatus = $this->smart_monitor->get_test_status($drive);
-        if($teststatus['running']){
+        if ($teststatus['running']) {
             $test = $teststatus['status']; //"In Progress";
-        } else {				
+        } else {
             $test = anchor_custom('/app/smart_monitor/start_test/' . $drive, 'Start');
         }
         $assessment = $this->smart_monitor->get_health($drive);
-			
+
     } else {
         $item['anchors'] = "N/A";
         $test = "N/A";
         $assessment = "N/A";
     }
-		
+
     //populate remaining data
     $item['details'] = array(
         'drive' => $drive . "<input type='hidden' name='drive' value=$drive>",
@@ -107,13 +107,11 @@ foreach ($drives as $drive){
 ///////////////////////////////////////////////////////////////////////////////
 
 echo form_open('smart_monitor/drives');
-
-	echo summary_table(
-		lang('smart_config_title'),
-		NULL,
-		$headers,
-		$items
-	);
-
+echo summary_table(
+    lang('smart_config_title'),
+    NULL,
+    $headers,
+    $items
+);
 echo form_close();
 

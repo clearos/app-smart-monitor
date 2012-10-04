@@ -4,7 +4,7 @@
  * SMART Monitor status controller.
  *
  * @category   Apps
- * @package    SMART Monitor
+ * @package    SMART_Monitor
  * @subpackage Controllers
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2011 ClearFoundation
@@ -37,7 +37,7 @@
  * Smart monitor status controller.
  *
  * @category   Apps
- * @package    Smart_monitor
+ * @package    SMART_Monitor
  * @subpackage Controllers
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation

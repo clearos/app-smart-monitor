@@ -4,7 +4,7 @@
  * Smartd daemon controller.
  *
  * @category   Apps
- * @package    SMART Monitor
+ * @package    SMART_Monitor
  * @subpackage Controllers
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation
@@ -50,7 +50,7 @@ require clearos_app_base('base') . '/controllers/daemon.php';
  * Smartd daemon controller.
  *
  * @category   Apps
- * @package    SMART Monitor
+ * @package    SMART_Monitor
  * @subpackage Controllers
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation

@@ -273,15 +273,15 @@ class Smart_Monitor extends Engine
             }
             if (preg_match('/Self-test execution status/', $line)) {
                 $line2 = " ".$line;
-                $line2 = preg_replace('/\s+/m',"|", $line2);
+                $line2 = preg_replace('/\s+/m', "|", $line2);
                 $pieces = explode("|", $line2);
                 $value = trim($pieces[5]);
                 if ($value!=0) {
-                    $output['running'] = true;
-                    $output['status'] = substr($line,40);
+                    $output['running'] = TRUE;
+                    $output['status'] = substr($line, 40);
                     $count = 1;
                 } else {
-                    $output['running'] = false;
+                    $output['running'] = FALSE;
                 }
             }
         }
@@ -340,7 +340,7 @@ class Smart_Monitor extends Engine
                 $line2 = " ".$line;
                 $line2 = preg_replace('/\s+/m', "|", $line);
                 $pieces = explode("|", $line2);
-                $value = preg_replace('/,/','', $pieces[2]);
+                $value = preg_replace('/,/', '', $pieces[2]);
                 $output['capacity'] = round($value/(1000*1000*1000));
             }
         }
@@ -450,7 +450,7 @@ class Smart_Monitor extends Engine
         // ---- Find the size of graph by substracting the size of borders
         $graph_width=$img_width - $margins * 2;
         $graph_height=$img_height- $margins * 2; 
-        $img=imagecreate($img_width,$img_height);
+        $img=imagecreate($img_width, $img_height);
     
         $bar_width=14;
         $total_bars=count($values);
@@ -460,7 +460,7 @@ class Smart_Monitor extends Engine
         // -------  Define Colors ----------------
         $bar_color = imagecolorallocate($img, 107, 142, 35);
         $background_color = imagecolorallocate($img, 240, 240, 255);
-        $border_color = imagecolorallocate($img, 240, 240 ,255);
+        $border_color = imagecolorallocate($img, 240, 240, 255);
         $line_color = imagecolorallocate($img, 220, 220, 220);
  
         // ------ Create the border around the graph ------
@@ -486,19 +486,19 @@ class Smart_Monitor extends Engine
  
         // ----------- Draw the bars here ------
         for ($i=0; $i< $total_bars; $i++) {  
-        // ------ Extract key and value pair from the current pointer position
-        list($key,$value)=each($values); 
-        $x1= $margins + $gap + $i * ($gap+$bar_width) ;
-        $x2= $x1 + $bar_width; 
-        $y1=$margins -$bottommargin +$graph_height- intval($value * $ratio) ;
-        $y2=$img_height-$margins -$bottommargin;
-        imagestring($img,0,$x1+1,$y1-10,$value,$bar_color);
-        imagestring($img,0,$x1+4,$img_height-10,$key,$bar_color);        
-        imagefilledrectangle($img,$x1,$y1,$x2,$y2,$bar_color);
-    }
+            // ------ Extract key and value pair from the current pointer position
+            list($key, $value)=each($values); 
+            $x1= $margins + $gap + $i * ($gap+$bar_width) ;
+            $x2= $x1 + $bar_width; 
+            $y1=$margins -$bottommargin +$graph_height- intval($value * $ratio);
+            $y2=$img_height-$margins -$bottommargin;
+            imagestring($img, 0, $x1+1, $y1-10, $value, $bar_color);
+            imagestring($img, 0, $x1+4, $img_height-10, $key, $bar_color);        
+            imagefilledrectangle($img, $x1, $y1, $x2, $y2, $bar_color);
+        }
         //header("Content-type:image/png");
         // dump graphs in temporary folder
-        imagepng($img,'/var/clearos/smart_monitor/graph_'.$drivename.'_'.$filename.'.png',0);
+        imagepng($img, '/var/clearos/smart_monitor/graph_'.$drivename.'_'.$filename.'.png', 0);
     
     }
 

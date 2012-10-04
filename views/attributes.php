@@ -4,7 +4,7 @@
  * SMART Monitor Attribute overview.
  *
  * @category   Apps
- * @package    smart_monitor
+ * @package    SMART_Monitor
  * @subpackage Views
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation
@@ -53,20 +53,20 @@ $anchors = array(
 //echo json_encode($attributes);
 
 // reassemble array for table summary
-foreach ($attributes as $id => $entry){
-    if ($id > 6){
+foreach ($attributes as $id => $entry) {
+    if ($id > 6) {
         $row['title'] = $id;
         //$row['action'] = NULL;
         //$row['anchors'] = NULL;
         $entry = " ".$entry;
-        $entry = preg_replace('/\s+/m',"|",$entry);
-        $values = explode("|",$entry);
+        $entry = preg_replace('/\s+/m', "|", $entry);
+        $values = explode("|", $entry);
         
         $row['details'] = array( 
             $values[1],$values[2],$values[4],$values[5],$values[6],$values[7],$values[8],$values[9],$values[10]
         );
         $rows[] = $row;
-     }
+    }
 }
 
 //echo json_encode($rows);

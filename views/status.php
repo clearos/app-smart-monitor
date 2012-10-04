@@ -4,7 +4,7 @@
  * SMART Monitor overview.
  *
  * @category   Apps
- * @package    Smart_monitor
+ * @package    SMART_Monitor
  * @subpackage Views
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation
@@ -102,19 +102,19 @@ $graphkeys = array(
 $drives = $this->smart_monitor->get_drives();
 
 // display drive stats
-foreach ($drives as $drive){
+foreach ($drives as $drive) {
 
     $check = $this->smart_monitor->get_drive_info($drive);
 
     //only display those with SMART enabled
-    if($check['enabled']){
+    if ($check['enabled']) {
         $data['drive'] = $drive;
         $gdata['drive'] = $drive;
         $output = $this->smart_monitor->get_smart_data($drive);
-        $drivename = ltrim($drive,'/dev/');
+        $drivename = ltrim($drive, '/dev/');
 
-	//generate raw data
-        foreach ($keys as $item){
+        //generate raw data
+        foreach ($keys as $item) {
             $values = array(
                 "T" => $output[$item]['T'],
                 "W" => $output[$item]['W'],
@@ -123,17 +123,17 @@ foreach ($drives as $drive){
         
             //generate graphs on the fly, for now use all keys
             try {
-                $this->smart_monitor->draw_graph($values,$item,$drivename);
+                $this->smart_monitor->draw_graph($values, $item, $drivename);
             }  catch (Exception $e) {
                 $this->page->view_exception($e);
             }
         }
         //populate table values
-        foreach ($tablekeys as $item){
+        foreach ($tablekeys as $item) {
             $data[$item] = $output[$item]['Raw'];
         }
         //populate graph entries
-        foreach ($graphkeys as $item){
+        foreach ($graphkeys as $item) {
             $gdata[$item] = "<img src='/approot/smart_monitor/htdocs/graphs/graph_" . $drivename ."_". $item . ".png' />";
         }
         $row['details'] = $data;
@@ -172,7 +172,7 @@ if ($rows != NULL) {
     );
 }
 
-foreach ($table as $key => $value){
+foreach ($table as $key => $value) {
     echo summary_table(
         lang('smart_logs_title') . ' ' . $key,
         NULL,

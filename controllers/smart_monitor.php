@@ -4,12 +4,12 @@
  * SMART Monitor.
  *
  * @category   Apps
- * @package    SMART Monitor
+ * @package    SMART_Monitor
  * @subpackage Controllers
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2011-2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/apps/bandwidth_viewer/
+ * @link       http://www.clearfoundation.com/docs/developer/apps/smart_monitor/
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -37,17 +37,16 @@
  * SMART Monitor Controller.
  *
  * @category   Apps
- * @package    SMART Monitor
+ * @package    SMART_Monitor
  * @subpackage Controllers
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2011-2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/apps/bandwidth_viewer/
+ * @link       http://www.clearfoundation.com/docs/developer/apps/smart_monitor/
  */
 
-class Smart_Monitor extends ClearOS_Controller 
+class Smart_Monitor extends ClearOS_Controller
 {
-
     function index() 
     {
 
