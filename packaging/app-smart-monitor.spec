@@ -1,7 +1,7 @@
 
 Name: app-smart-monitor
 Epoch: 1
-Version: 1.0.1
+Version: 1.0.2
 Release: 1%{dist}
 Summary: SMART Monitor
 License: GPLv3
@@ -22,6 +22,7 @@ License: LGPLv3
 Group: ClearOS/Libraries
 Requires: app-base-core
 Requires: smartmontools
+Requires: webconfig-php-gd
 
 %description core
 SMART Monitor provides an overview of the self-monitoring, analysis and reporting technology (SMART) system built into many ATA-3 and layer ATA, IDE and SCSI-3 hard drives. The purpose of SMART is to monitor the reliability of the hard drive and predict drive failures, and to carry out different types of drive self-tests.
