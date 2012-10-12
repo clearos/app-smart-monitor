@@ -45,6 +45,9 @@ if [ -d %{buildroot}/usr/clearos/apps/smart_monitor/libraries_zendguard ]; then
     mv %{buildroot}/usr/clearos/apps/smart_monitor/libraries_zendguard %{buildroot}/usr/clearos/apps/smart_monitor/libraries
 fi
 
+rm -f %{buildroot}/usr/clearos/apps/smart_monitor/htdocs/graphs
+ln -s /var/clearos/smart_monitor %{buildroot}/usr/clearos/apps/smart_monitor/htdocs/graphs
+
 %post
 logger -p local6.notice -t installer 'app-smart-monitor - installing'
 
