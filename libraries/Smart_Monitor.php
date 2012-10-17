@@ -442,8 +442,7 @@ class Smart_Monitor extends Engine
     /**
      * Sets the sender email address field.
      *
-     * @param mixed $sender a string or array (address, name) representing the sender's email address
-     * @param boolean true or false for test email notiification
+     * @param mixed $sender a string representing the sender's email address
      *
      * @return void
      * @throws Validation_Exception
@@ -468,7 +467,7 @@ class Smart_Monitor extends Engine
     /**
      * Sets the email test address field.
      *
-     * @param boolean true or false for test email notiification
+     * @param boolean $test true or false for test email notiification
      *
      * @return void
      * @throws Validation_Exception
@@ -482,7 +481,7 @@ class Smart_Monitor extends Engine
             $file = new File(self::SMARTD_CONFIG);
             $existingline = $file->lookup_line('/^DEVICESCAN/i');
 
-            if($test) {
+            if ($test) {
                 $testargs = "-M test\n";
                 $newline = $existingline .' '. $testargs;
                 $retval = $file->replace_one_line('/^DEVICESCAN/i', $newline);
