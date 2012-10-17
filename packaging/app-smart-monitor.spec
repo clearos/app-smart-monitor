@@ -1,7 +1,7 @@
 
 Name: app-smart-monitor
 Epoch: 1
-Version: 1.0.2
+Version: 1.0.3
 Release: 1%{dist}
 Summary: SMART Monitor
 License: GPLv3

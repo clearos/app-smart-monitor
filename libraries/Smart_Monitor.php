@@ -57,9 +57,11 @@ clearos_load_language('smart_monitor');
 
 use \clearos\apps\base\Shell as Shell;
 use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\File as File;
 
 clearos_load_library('base/Shell');
 clearos_load_library('base/Engine');
+clearos_load_library('base/File');
 
 // Exceptions
 //-----------
@@ -95,6 +97,7 @@ class Smart_Monitor extends Engine
     const CMD_SMARTCTL = '/usr/sbin/smartctl';
     const FILE_PARTITIONS = '/proc/partitions';
     const CMD_CAT = '/bin/cat';
+    const SMARTD_CONFIG = '/etc/smartd.conf';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -390,8 +393,8 @@ class Smart_Monitor extends Engine
             if (preg_match('/^#/', $line)) {
                 $found=TRUE;
                 $num = substr($line, 0, 3);
-                $line2 = preg_replace('/\s\s+/m', "|", $line);
-                $pieces = explode("|", $line2);
+                $line2 = preg_replace('/\s\s+/m', '|', $line);
+                $pieces = explode('|', $line2);
                 $data['details'] = array(
                     'Num' => $num,
                     'Description' => $pieces[1],
@@ -405,6 +408,95 @@ class Smart_Monitor extends Engine
         }
         return $table;
     }
+
+    /**
+     * Returns sender address.
+     *
+     * @return string sender address
+     * @throws Engine_Exception
+     */
+
+    public function get_sender()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            $file = new File(self::SMARTD_CONFIG);
+            $retval = $file->lookup_value('/^DEVICESCAN/i');
+            $output = preg_replace('/-/', '|', $retval);
+            $args = explode('|', $output);
+            foreach ($args as $arg) {
+                $command = substr($arg, 0, 1);
+                if ($command == 'm') {
+                    $sender = preg_replace('/^m /', '', $arg);
+                    $sender = trim($sender);
+                }
+            }
+        } catch (File_No_Match_Exception $e) {
+            return FALSE;
+        } 
+
+        return $sender;
+    }
+
+    /**
+     * Sets the sender email address field.
+     *
+     * @param mixed $sender a string or array (address, name) representing the sender's email address
+     * @param boolean true or false for test email notiification
+     *
+     * @return void
+     * @throws Validation_Exception
+     */
+
+    public function set_sender($sender)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        Validation_Exception::is_valid($this->validate_email($sender));
+
+        try {
+            $file = new File(self::SMARTD_CONFIG);
+            //TODO: permit users to specify their own parameters for scheduling tests
+            $newline = "DEVICESCAN -H -m $sender\n";
+            $retval = $file->replace_one_line('/^DEVICESCAN/i', $newline);
+        } catch (File_No_Match_Exception $e) {
+            return FALSE;
+        }
+    }
+
+    /**
+     * Sets the email test address field.
+     *
+     * @param boolean true or false for test email notiification
+     *
+     * @return void
+     * @throws Validation_Exception
+     */
+
+    public function set_test($test)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            $file = new File(self::SMARTD_CONFIG);
+            $existingline = $file->lookup_line('/^DEVICESCAN/i');
+
+            if($test) {
+                $testargs = "-M test\n";
+                $newline = $existingline .' '. $testargs;
+                $retval = $file->replace_one_line('/^DEVICESCAN/i', $newline);
+            } else {
+                $newline = preg_replace('/-M test/', '', $existingline);
+                $newline = $newline . "\n";
+                $retval = $file->replace_one_line('/^DEVICESCAN/i', $newline);
+            }
+        } catch (File_No_Match_Exception $e) {
+            return FALSE;
+        }
+    }
+
+
 
     /**
      * Function to initiate drive self test (short)
@@ -549,6 +641,23 @@ class Smart_Monitor extends Engine
     ///////////////////////////////////////////////////////////////////////////////
     // V A L I D A T I O N   M E T H O D S
     ///////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Validation routine for email.
+     *
+     * @param string $email email
+     *
+     * @return mixed void if email is valid, errmsg otherwise
+     */
+
+    public function validate_email($email)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email))
+            return lang('smart_monitor_email_invalid');
+    }
 
 }
 // vim: syntax=php ts=4
