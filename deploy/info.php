@@ -44,3 +44,7 @@ $app['core_file_manifest'] = array(
 $app['core_directory_manifest'] = array(
    '/var/clearos/smart_monitor' => array('mode' => '755', 'owner' => 'webconfig', 'group' => 'webconfig')
 );
+
+$app['htdocs_symlinks'] = array(
+    '/var/clearos/smart_monitor' => '/usr/clearos/apps/smart_monitor/htdocs/graphs',
+);
