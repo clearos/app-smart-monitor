@@ -55,21 +55,21 @@ clearos_load_language('smart_monitor');
 // Classes
 //--------
 
-use \clearos\apps\base\Shell as Shell;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
+use \clearos\apps\base\Shell as Shell;
 
-clearos_load_library('base/Shell');
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
+clearos_load_library('base/Shell');
 
 // Exceptions
 //-----------
 
-use \clearos\apps\base\Engine_Exception as Engine_Exception;
+use \clearos\apps\base\File_No_Match_Exception as File_No_Match_Exception;
 use \clearos\apps\base\Validation_Exception as Validation_Exception;
 
-clearos_load_library('base/Engine_Exception');
+clearos_load_library('base/File_No_Match_Exception');
 clearos_load_library('base/Validation_Exception');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -126,6 +126,7 @@ class Smart_Monitor extends Engine
 
         $shell = new Shell();
         $args = self::FILE_PARTITIONS;
+        $options['env'] = 'LANG=en_US';
         $shell->execute(self::CMD_CAT, $args, FALSE, $options);
         $retval = $shell->get_output();
         
@@ -155,6 +156,7 @@ class Smart_Monitor extends Engine
 
         $shell = new Shell();
         $args = '-A ' . $drive;
+        $options['env'] = 'LANG=en_US';
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
@@ -237,6 +239,7 @@ class Smart_Monitor extends Engine
 
         $shell = new Shell();
         $args = '--attributes ' . $drive;
+        $options['env'] = 'LANG=en_US';
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
@@ -255,6 +258,8 @@ class Smart_Monitor extends Engine
  
         clearos_profile(__METHOD__, __LINE__);
         $shell = new Shell();
+        $options['validate_exit_code'] = FALSE;
+        $options['env'] = 'LANG=en_US';
         $args = '-H ' . $drive;
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
@@ -283,6 +288,7 @@ class Smart_Monitor extends Engine
 
         $shell = new Shell();
         $args = '-c ' . $drive;
+        $options['env'] = 'LANG=en_US';
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
@@ -325,6 +331,7 @@ class Smart_Monitor extends Engine
         $shell = new Shell();
         $args = '-i ' . $drive;
         $options['validate_exit_code'] = FALSE;
+        $options['env'] = 'LANG=en_US';
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
@@ -386,6 +393,7 @@ class Smart_Monitor extends Engine
  
         $shell = new Shell();
         $args = '--log=selftest ' . $drive;
+        $options['env'] = 'LANG=en_US';
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $retval = $shell->get_output();
 
@@ -510,6 +518,7 @@ class Smart_Monitor extends Engine
         clearos_profile(__METHOD__, __LINE__);
       
         $shell = new Shell();
+        $options['env'] = 'LANG=en_US';
         $args = '--test=short ' . $drive;
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $output = $shell->get_output();
@@ -529,6 +538,7 @@ class Smart_Monitor extends Engine
         clearos_profile(__METHOD__, __LINE__); 
 
         $shell = new Shell();
+        $options['env'] = 'LANG=en_US';
         $args = '--smart=on ' . $drive;
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $output = $shell->get_output();
@@ -548,6 +558,7 @@ class Smart_Monitor extends Engine
         clearos_profile(__METHOD__, __LINE__);
  
         $shell = new Shell();
+        $options['env'] = 'LANG=en_US';
         $args = '--smart=off ' . $drive;
         $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
         $output = $shell->get_output();
