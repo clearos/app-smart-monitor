@@ -48,3 +48,8 @@ $app['core_directory_manifest'] = array(
 $app['htdocs_symlinks'] = array(
     '/var/clearos/smart_monitor' => '/usr/clearos/apps/smart_monitor/htdocs/graphs',
 );
+
+$app['delete_dependency'] = array(
+    'app-smart-monitor-core',
+    'smartmontools'
+);
