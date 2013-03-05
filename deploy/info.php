@@ -20,7 +20,7 @@ $app['tooltip'] = lang('smart_tooltip');
 
 $app['name'] = lang('smart_monitor_appname');
 $app['category'] = lang('base_category_system');
-$app['subcategory'] = 'Storage';
+$app['subcategory'] = lang('base_subcategory_storage');
 
 /////////////////////////////////////////////////////////////////////////////
 // Controllers
