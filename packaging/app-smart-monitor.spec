@@ -1,7 +1,7 @@
 
 Name: app-smart-monitor
 Epoch: 1
-Version: 1.1.1
+Version: 1.1.2
 Release: 1%{dist}
 Summary: SMART Monitor
 License: GPLv3
@@ -44,6 +44,9 @@ if [ -d %{buildroot}/usr/clearos/apps/smart_monitor/libraries_zendguard ]; then
     rm -rf %{buildroot}/usr/clearos/apps/smart_monitor/libraries
     mv %{buildroot}/usr/clearos/apps/smart_monitor/libraries_zendguard %{buildroot}/usr/clearos/apps/smart_monitor/libraries
 fi
+
+rm -f %{buildroot}/usr/clearos/apps/smart_monitor/htdocs/graphs
+ln -s /var/clearos/smart_monitor %{buildroot}/usr/clearos/apps/smart_monitor/htdocs/graphs
 
 %post
 logger -p local6.notice -t installer 'app-smart-monitor - installing'
