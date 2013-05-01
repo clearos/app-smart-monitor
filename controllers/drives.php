@@ -60,6 +60,23 @@ class Drives extends ClearOS_Controller
 
         $this->lang->load('base');
 
+        // Load data
+        //----------
+        $drivelist = array();
+        $drive = array();
+
+        $drivelist = $this->smart_monitor->get_drives();
+        foreach ($drivelist as $value) {
+            $drive['name'] = $value;
+            $drive['info'] = $this->smart_monitor->get_drive_info($value);
+            if ($drive['info']['available']) {
+                $drive['teststatus'] = $this->smart_monitor->get_test_status($value);
+                $drive['assessment'] = $this->smart_monitor->get_health($value);
+            }
+            $drives[] = $drive;
+        }
+        $data['drives'] = $drives;
+
         // Load views
         //-----------
 

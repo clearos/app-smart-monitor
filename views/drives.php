@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 $this->lang->load('smart_monitor');
-$this->load->library('smart_monitor/Smart_Monitor');
+$this->lang->load('base');
 
 ///////////////////////////////////////////////////////////////////////////////
 // Headers 
@@ -53,36 +53,29 @@ $headers = array(
 // Row Data
 ///////////////////////////////////////////////////////////////////////////////
 
-$drives = $this->smart_monitor->get_drives();
-
 foreach ($drives as $drive) {
-    //find out drive information
-    $check = $this->smart_monitor->get_drive_info($drive);
-
-    if ($check['available']) {
+    $name = $drive['name'];
+    if ($drive['info']['available']) {
         $available = lang('smart_available');
     } else {
         $available = lang('smart_notavailable');
     }
-    if ($check['available'] && !$check['enabled']) {
-        $state = ($check['enabled']) ? 'disable' : 'enable';
+    if ($drive['info']['available'] && !$drive['info']['enabled']) {
+        $state = ($drive['info']['enabled']) ? 'disable' : 'enable';
         $state_anchor = 'anchor_' . $state;
-        $item['anchors'] = $state_anchor('/app/smart_monitor/' . $state . '/' . $drive, 'high');
+        $item['anchors'] = $state_anchor('/app/smart_monitor/' . $state . '/' . $name, 'high');
         $test = "N/A";
         $assessment = "N/A";
-    } elseif ($check['available'] && $check['enabled']) {
-        $state = ($check['enabled']) ? 'disable' : 'enable';
+    } elseif ($drive['info']['available'] && $drive['info']['enabled']) {
+        $state = ($drive['info']['enabled']) ? 'disable' : 'enable';
         $state_anchor = 'anchor_' . $state;
-        $item['anchors'] = $state_anchor('/app/smart_monitor/' . $state . '/' . $drive, 'high');
-        //determine test status
-        $teststatus = $this->smart_monitor->get_test_status($drive);
-        if ($teststatus['running']) {
-            $test = $teststatus['status']; //"In Progress";
+        $item['anchors'] = $state_anchor('/app/smart_monitor/' . $state . '/' . $name, 'high');
+        if ($drive['teststatus']['running']) {
+            $test = $drive['teststatus']['status']; //"In Progress";
         } else {
-            $test = anchor_custom('/app/smart_monitor/start_test/' . $drive, 'Start');
-        }
-        $assessment = $this->smart_monitor->get_health($drive);
-
+            $test = anchor_custom('/app/smart_monitor/start_test/' . $name, lang('base_start'));
+        } 
+        $assessment = $drive['assessment'];
     } else {
         $item['anchors'] = "N/A";
         $test = "N/A";
@@ -91,9 +84,9 @@ foreach ($drives as $drive) {
 
     //populate remaining data
     $item['details'] = array(
-        'drive' => $drive . "<input type='hidden' name='drive' value=$drive>",
-        'model' => "<span title='".$check['serial']."'>".$check['device'],
-        'capacity' => $check['capacity'],
+        'drive' => $name . "<input type='hidden' name='drive' value=$name>",
+        'model' => "<span title='".$drive['info']['serial']."'>".$drive['info']['device'],
+        'capacity' => $drive['info']['capacity'],
         'available' => $available,
         'health' => $assessment,
         'test' => $test

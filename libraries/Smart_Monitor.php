@@ -66,6 +66,7 @@ clearos_load_library('base/Shell');
 // Exceptions
 //-----------
 
+use \Exception as Exception;
 use \clearos\apps\base\File_No_Match_Exception as File_No_Match_Exception;
 use \clearos\apps\base\Validation_Exception as Validation_Exception;
 
@@ -95,8 +96,8 @@ class Smart_Monitor extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     const CMD_SMARTCTL = '/usr/sbin/smartctl';
-    const FILE_PARTITIONS = '/proc/partitions';
-    const CMD_CAT = '/bin/cat';
+    //const FILE_PARTITIONS = '/proc/partitions';
+    //const CMD_CAT = '/bin/cat';
     const SMARTD_CONFIG = '/etc/smartd.conf';
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -124,19 +125,23 @@ class Smart_Monitor extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $shell = new Shell();
-        $args = self::FILE_PARTITIONS;
-        $options['env'] = 'LANG=en_US';
-        $shell->execute(self::CMD_CAT, $args, FALSE, $options);
-        $retval = $shell->get_output();
+        try {
+            $shell = new Shell();
+            $args = '--scan-open';
+            $options['env'] = 'LANG=en_US';
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $retval = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
         
         $count = 0;
         foreach ($retval as $line) {
-            if (preg_match('/\b[sh]d[a-z]\b/', $line)) {
-                $line2 = " ".$line;
-                $line2 = preg_replace('/\s+/m', '|', $line2);
-                $pieces = explode("|", $line2);
-                $drives[$count] = "/dev/" . $pieces[4];
+            $line2 = " ".$line;
+            $line2 = preg_replace('/\s+/m', '|', $line2);
+            $pieces = explode("|", $line2);
+            if (preg_match('/[sh]d[a-z]/', $pieces[1])) {
+                $drives[$count] = $pieces[1];
                 $count++;
             }
         }
@@ -154,11 +159,15 @@ class Smart_Monitor extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $shell = new Shell();
-        $args = '-A ' . $drive;
-        $options['env'] = 'LANG=en_US';
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $retval = $shell->get_output();
+        try {
+            $shell = new Shell();
+            $args = '-A ' . $drive;
+            $options['env'] = 'LANG=en_US';
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $retval = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
 
         foreach ($retval as $line) {
             $line2 = " ".$line;
@@ -236,12 +245,15 @@ class Smart_Monitor extends Engine
     public function get_smart_attributes($drive)
     {
         clearos_profile(__METHOD__, __LINE__);
-
-        $shell = new Shell();
-        $args = '--attributes ' . $drive;
-        $options['env'] = 'LANG=en_US';
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $retval = $shell->get_output();
+        try {
+            $shell = new Shell();
+            $args = '--attributes ' . $drive;
+            $options['env'] = 'LANG=en_US';
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $retval = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
 
         return $retval;
     }
@@ -257,12 +269,17 @@ class Smart_Monitor extends Engine
     {
  
         clearos_profile(__METHOD__, __LINE__);
-        $shell = new Shell();
-        $options['validate_exit_code'] = FALSE;
-        $options['env'] = 'LANG=en_US';
-        $args = '-H ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $retval = $shell->get_output();
+    
+        try {
+            $shell = new Shell();
+            $options['validate_exit_code'] = FALSE;
+            $options['env'] = 'LANG=en_US';
+            $args = '-H ' . $drive;
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $retval = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
 
         foreach ($retval as $line) {
             if (preg_match('/test result/', $line)) {
@@ -286,11 +303,15 @@ class Smart_Monitor extends Engine
 
         clearos_profile(__METHOD__, __LINE__);
 
-        $shell = new Shell();
-        $args = '-c ' . $drive;
-        $options['env'] = 'LANG=en_US';
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $retval = $shell->get_output();
+        try {
+            $shell = new Shell();
+            $args = '-c ' . $drive;
+            $options['env'] = 'LANG=en_US';
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $retval = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
 
         $count = 0;
         foreach ($retval as $line) {
@@ -328,12 +349,16 @@ class Smart_Monitor extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
     
-        $shell = new Shell();
-        $args = '-i ' . $drive;
-        $options['validate_exit_code'] = FALSE;
-        $options['env'] = 'LANG=en_US';
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $retval = $shell->get_output();
+        try {
+            $shell = new Shell();
+            $args = '-i ' . $drive;
+            $options['validate_exit_code'] = FALSE;
+            $options['env'] = 'LANG=en_US';
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $retval = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
 
         foreach ($retval as $line) {
             if (preg_match('/SMART support is/', $line)) {
@@ -391,11 +416,15 @@ class Smart_Monitor extends Engine
 
         clearos_profile(__METHOD__, __LINE__);
  
-        $shell = new Shell();
-        $args = '--log=selftest ' . $drive;
-        $options['env'] = 'LANG=en_US';
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $retval = $shell->get_output();
+        try {
+            $shell = new Shell();
+            $args = '--log=selftest ' . $drive;
+            $options['env'] = 'LANG=en_US';
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $retval = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
 
         foreach ($retval as $line) {
             if (preg_match('/^#/', $line)) {
@@ -516,12 +545,15 @@ class Smart_Monitor extends Engine
     {
 
         clearos_profile(__METHOD__, __LINE__);
-      
-        $shell = new Shell();
-        $options['env'] = 'LANG=en_US';
-        $args = '--test=short ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $output = $shell->get_output();
+        try {      
+            $shell = new Shell();
+            $options['env'] = 'LANG=en_US';
+            $args = '--test=short ' . $drive;
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $output = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
     
         return $output;
     }
@@ -536,12 +568,15 @@ class Smart_Monitor extends Engine
     public function enable_smart($drive)
     {
         clearos_profile(__METHOD__, __LINE__); 
-
-        $shell = new Shell();
-        $options['env'] = 'LANG=en_US';
-        $args = '--smart=on ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $output = $shell->get_output();
+        try {
+            $shell = new Shell();
+            $options['env'] = 'LANG=en_US';
+            $args = '--smart=on ' . $drive;
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $output = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
     
         return $output;
     }
@@ -556,12 +591,15 @@ class Smart_Monitor extends Engine
     public function disable_smart($drive)
     {
         clearos_profile(__METHOD__, __LINE__);
- 
-        $shell = new Shell();
-        $options['env'] = 'LANG=en_US';
-        $args = '--smart=off ' . $drive;
-        $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
-        $output = $shell->get_output();
+        try {
+            $shell = new Shell();
+            $options['env'] = 'LANG=en_US';
+            $args = '--smart=off ' . $drive;
+            $shell->execute(self::CMD_SMARTCTL, $args, TRUE, $options);
+            $output = $shell->get_output();
+        } catch (Exception $e) {
+            //do nothing
+        }
 
         return $output;
     }
