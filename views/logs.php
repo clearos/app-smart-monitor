@@ -3,9 +3,9 @@
 /**
  * SMART Drive log overview.
  *
- * @category   Apps
- * @package    SMART_Monitor
- * @subpackage Views
+ * @category   apps
+ * @package    smart-monitor
+ * @subpackage views
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation
  * @copyright  Flot JS Chart 2007-2009 IOLA and Ole Laursen

@@ -3,9 +3,9 @@
 /**
  * SMART Monitor.
  *
- * @category   Apps
- * @package    SMART_Monitor
- * @subpackage Controllers
+ * @category   apps
+ * @package    smart-monitor
+ * @subpackage controllers
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2011-2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -36,9 +36,9 @@
 /**
  * SMART Monitor Controller.
  *
- * @category   Apps
- * @package    SMART_Monitor
- * @subpackage Controllers
+ * @category   apps
+ * @package    smart-monitor
+ * @subpackage controllers
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2011-2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later

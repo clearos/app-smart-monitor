@@ -3,9 +3,9 @@
 /**
  * SMART Monitor config view.
  *
- * @category   Apps
- * @package    SMART_Monitor
- * @subpackage Views
+ * @category   apps
+ * @package    smart-monitor
+ * @subpackage views
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later

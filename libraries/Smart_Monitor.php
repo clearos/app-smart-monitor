@@ -3,9 +3,9 @@
 /**
  * SMART Monitor class.
  *
- * @category   Apps
- * @package    Smart_Monitor
- * @subpackage Libraries
+ * @category   apps
+ * @package    smart-monitor
+ * @subpackage libraries
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -80,9 +80,9 @@ clearos_load_library('base/Validation_Exception');
 /**
  * Smart Monitor class.
  *
- * @category   Apps
- * @package    Smart_Monitor
- * @subpackage Libraries
+ * @category   apps
+ * @package    smart-monitor
+ * @subpackage libraries
  * @author     Tim Burgess <trburgess@gmail.com>
  * @copyright  2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
