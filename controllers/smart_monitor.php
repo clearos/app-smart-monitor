@@ -61,7 +61,7 @@ class Smart_Monitor extends ClearOS_Controller
 
         $views = array('smart_monitor/settings', 'smart_monitor/server', 'smart_monitor/drives', 'smart_monitor/status');
 
-        $this->page->view_forms($views, lang('smart_monitor_appname'));
+        $this->page->view_forms($views, lang('smart_monitor_app_name'));
     }
 
     /**

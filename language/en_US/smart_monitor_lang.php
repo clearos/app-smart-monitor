@@ -1,6 +1,6 @@
 <?php
 //minimum
-$lang['smart_monitor_appname'] = 'SMART Monitor';
+$lang['smart_monitor_app_name'] = 'SMART Monitor';
 $lang['smart_monitor_app_description'] = 'SMART Monitor provides an overview of the self-monitoring, analysis and reporting technology (SMART) system built into many ATA-3 and layer ATA, IDE and SCSI-3 hard drives. The purpose of SMART is to monitor the reliability of the hard drive and predict drive failures, and to carry out different types of drive self-tests.';
 $lang['smart_tooltip'] = 'Drive RAW values vary according to the manufacturers own specification. T=Threshold, W=Worst, V=Normalised Values. The SMART daemon will monitor drive health and send an email to notify of errors. Hover over the drive model to see the serial number.';
 $lang['smart_monitor_title'] = 'View Title';
