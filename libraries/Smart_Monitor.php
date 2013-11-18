@@ -460,7 +460,7 @@ class Smart_Monitor extends Engine
         try {
             $file = new File(self::SMARTD_CONFIG);
             $retval = $file->lookup_value('/^DEVICESCAN/i');
-            $output = preg_replace('/-/', '|', $retval);
+            $output = preg_replace('/(^-|\s+-)(\w){1}/', '|\2', $retval);
             $args = explode('|', $output);
             foreach ($args as $arg) {
                 $command = substr($arg, 0, 1);
