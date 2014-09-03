@@ -1,7 +1,7 @@
 
 Name: app-smart-monitor
 Epoch: 1
-Version: 1.1.4
+Version: 1.6.5
 Release: 1%{dist}
 Summary: SMART Monitor
 License: GPLv3
@@ -77,7 +77,6 @@ exit 0
 %files core
 %defattr(-,root,root)
 %exclude /usr/clearos/apps/smart_monitor/packaging
-%exclude /usr/clearos/apps/smart_monitor/tests
 %dir /usr/clearos/apps/smart_monitor
 %dir %attr(755,webconfig,webconfig) /var/clearos/smart_monitor
 /usr/clearos/apps/smart_monitor/deploy
