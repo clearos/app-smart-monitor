@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'smart_monitor';
-$app['version'] = '1.6.5';
+$app['version'] = '2.0.14';
 $app['release'] = '1';
 $app['vendor'] = 'Tim Burgess';
 $app['packager'] = 'Tim Burgess';
@@ -19,8 +19,8 @@ $app['tooltip'] = lang('smart_tooltip');
 /////////////////////////////////////////////////////////////////////////////
 
 $app['name'] = lang('smart_monitor_app_name');
-$app['category'] = lang('base_category_system');
-$app['subcategory'] = lang('base_subcategory_storage');
+$app['category'] = lang('base_category_reports');
+$app['subcategory'] = lang('base_subcategory_performance_and_resources');
 
 /////////////////////////////////////////////////////////////////////////////
 // Controllers
