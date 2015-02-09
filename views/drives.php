@@ -44,7 +44,6 @@ $headers = array(
     lang('smart_drive'),
     lang('smart_model'),
     lang('smart_size'),
-    lang('smart_smartsupport'), 
     lang('smart_health'),
     lang('smart_shorttest')
 );
@@ -55,17 +54,17 @@ $headers = array(
 
 foreach ($drives as $drive) {
     $name = $drive['name'];
-    if ($drive['info']['available']) {
-        $available = lang('smart_available');
-    } else {
-        $available = lang('smart_notavailable');
-    }
+
+    $available = FALSE;
+    if ($drive['info']['available'])
+        $available = TRUE;
+
     if ($drive['info']['available'] && !$drive['info']['enabled']) {
         $state = ($drive['info']['enabled']) ? 'disable' : 'enable';
         $state_anchor = 'anchor_' . $state;
         $item['anchors'] = $state_anchor('/app/smart_monitor/' . $state . '/' . $name, 'high');
-        $test = "N/A";
-        $assessment = "N/A";
+        $test = "";
+        $assessment = "---";
     } elseif ($drive['info']['available'] && $drive['info']['enabled']) {
         $state = ($drive['info']['enabled']) ? 'disable' : 'enable';
         $state_anchor = 'anchor_' . $state;
@@ -77,17 +76,19 @@ foreach ($drives as $drive) {
         } 
         $assessment = $drive['assessment'];
     } else {
-        $item['anchors'] = "N/A";
-        $test = "N/A";
-        $assessment = "N/A";
+        $item['anchors'] = "";
+        $test = "---";
+        $assessment = "---";
     }
+    if (!$available)
+        $test = lang('smart_unsupported');
 
     //populate remaining data
+
     $item['details'] = array(
-        'drive' => $name . "<input type='hidden' name='drive' value=$name>",
-        'model' => "<span title='".$drive['info']['serial']."'>".$drive['info']['device'],
+        'drive' => $name . "<input type='hidden' name='drive' value='$name'>",
+        'model' => "<span data-toggle='tooltip' data-container='body' title='" . $drive['info']['serial'] . "'>" . $drive['info']['device'],
         'capacity' => $drive['info']['capacity'],
-        'available' => $available,
         'health' => $assessment,
         'test' => $test
     );

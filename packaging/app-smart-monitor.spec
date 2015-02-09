@@ -1,13 +1,13 @@
 
 Name: app-smart-monitor
 Epoch: 1
-Version: 2.0.14
+Version: 2.0.15
 Release: 1%{dist}
 Summary: SMART Monitor
 License: GPLv3
 Group: ClearOS/Apps
-Packager: Tim Burgess
-Vendor: Tim Burgess
+Packager: Tim Burgess <timb80@scm.clearfoundation.com>
+Vendor: Tim Burgess <timb80@scm.clearfoundation.com>
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}

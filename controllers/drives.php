@@ -75,6 +75,7 @@ class Drives extends ClearOS_Controller
             }
             $drives[] = $drive;
         }
+
         $data['drives'] = $drives;
 
         // Load views

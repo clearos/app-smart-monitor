@@ -5,14 +5,18 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'smart_monitor';
-$app['version'] = '2.0.14';
+$app['version'] = '2.0.15';
 $app['release'] = '1';
-$app['vendor'] = 'Tim Burgess';
-$app['packager'] = 'Tim Burgess';
+$app['vendor'] = 'Tim Burgess <timb80@scm.clearfoundation.com>';
+$app['packager'] = 'Tim Burgess <timb80@scm.clearfoundation.com>';
 $app['license'] = 'GPLv3';
 $app['license_core'] = 'LGPLv3';
 $app['description'] = lang('smart_monitor_app_description');
-$app['tooltip'] = lang('smart_tooltip');
+$app['tooltip'] = array(
+    lang('smart_tooltip_1'),
+    lang('smart_tooltip_2'),
+    lang('smart_tooltip_3')
+);
 
 /////////////////////////////////////////////////////////////////////////////
 // App name and categories

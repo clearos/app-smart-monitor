@@ -50,7 +50,7 @@ if ($mode === 'edit') {
     $read_only = TRUE;
     $buttons = array(
         anchor_edit('/app/smart_monitor/settings/edit'),
-        anchor_custom('/app/smart_monitor/settings/test', lang('smart_monitor_test'), 'high')
+        anchor_custom('/app/smart_monitor/settings/test', lang('smart_monitor_test'), 'low')
     );
 }
 

@@ -46,6 +46,7 @@ require_once $bootstrap . '/bootstrap.php';
 // T R A N S L A T I O N S
 ///////////////////////////////////////////////////////////////////////////////
 
+clearos_load_language('base');
 clearos_load_language('smart_monitor');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -704,7 +705,7 @@ class Smart_Monitor extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email))
-            return lang('smart_monitor_email_invalid');
+            return lang('base_email_address_invalid');
     }
 
 }

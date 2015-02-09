@@ -47,6 +47,11 @@
 
 class Smart_Monitor extends ClearOS_Controller
 {
+    /**
+     * Smart monitor logs controller
+     *
+     * @return view
+     */
     function index() 
     {
 
