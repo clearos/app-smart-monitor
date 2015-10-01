@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'smart_monitor';
-$app['version'] = '2.1.6';
+$app['version'] = '2.1.7';
 $app['release'] = '1';
 $app['vendor'] = 'Tim Burgess <timb80@scm.clearfoundation.com>';
 $app['packager'] = 'Tim Burgess <timb80@scm.clearfoundation.com>';
@@ -14,8 +14,7 @@ $app['license_core'] = 'LGPLv3';
 $app['description'] = lang('smart_monitor_app_description');
 $app['tooltip'] = array(
     lang('smart_tooltip_1'),
-    lang('smart_tooltip_2'),
-    lang('smart_tooltip_3')
+    lang('smart_tooltip_2')
 );
 
 /////////////////////////////////////////////////////////////////////////////

@@ -7,7 +7,7 @@
  * @package    smart-monitor
  * @subpackage libraries
  * @author     Tim Burgess <trburgess@gmail.com>
- * @copyright  2012 ClearFoundation
+ * @copyright  2012-2015 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/smart_monitor/
  */
@@ -56,10 +56,12 @@ clearos_load_language('smart_monitor');
 // Classes
 //--------
 
+use \clearos\apps\base\Daemon as Daemon;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Shell as Shell;
 
+clearos_load_library('base/Daemon');
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
 clearos_load_library('base/Shell');
@@ -68,10 +70,12 @@ clearos_load_library('base/Shell');
 //-----------
 
 use \Exception as Exception;
+use \clearos\apps\base\File_Not_Found_Exception as File_Not_Found_Exception;
 use \clearos\apps\base\File_No_Match_Exception as File_No_Match_Exception;
 use \clearos\apps\base\Validation_Exception as Validation_Exception;
 
 clearos_load_library('base/File_No_Match_Exception');
+clearos_load_library('base/File_Not_Found_Exception');
 clearos_load_library('base/Validation_Exception');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -85,20 +89,18 @@ clearos_load_library('base/Validation_Exception');
  * @package    smart-monitor
  * @subpackage libraries
  * @author     Tim Burgess <trburgess@gmail.com>
- * @copyright  2012 ClearFoundation
+ * @copyright  2012-2015 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/smart_monitor/
  */
 
-class Smart_Monitor extends Engine
+class Smart_Monitor extends Daemon
 {
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
     ///////////////////////////////////////////////////////////////////////////////
 
     const CMD_SMARTCTL = '/usr/sbin/smartctl';
-    //const FILE_PARTITIONS = '/proc/partitions';
-    //const CMD_CAT = '/bin/cat';
     const SMARTD_CONFIG = '/etc/smartd.conf';
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -113,7 +115,7 @@ class Smart_Monitor extends Engine
     public function __construct()
     {
         clearos_profile(__METHOD__, __LINE__);
-
+        parent::__construct('smartd');
     } 
 
 
@@ -459,7 +461,7 @@ class Smart_Monitor extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         try {
-            $file = new File(self::SMARTD_CONFIG);
+            $file = new File(self::SMARTD_CONFIG, TRUE);
             $retval = $file->lookup_value('/^DEVICESCAN/i');
             $output = preg_replace('/(^-|\s+-)(\w){1}/', '|\2', $retval);
             $args = explode('|', $output);
@@ -470,6 +472,8 @@ class Smart_Monitor extends Engine
                     $sender = trim($sender);
                 }
             }
+        } catch (File_Not_Found_Exception $e) {
+            return FALSE;
         } catch (File_No_Match_Exception $e) {
             return FALSE;
         } 
@@ -493,12 +497,16 @@ class Smart_Monitor extends Engine
         Validation_Exception::is_valid($this->validate_email($sender));
 
         try {
-            $file = new File(self::SMARTD_CONFIG);
+            $file = new File(self::SMARTD_CONFIG, TRUE);
+            if (!$file->exists())
+                $file->create('root', 'root', '0644');
             //TODO: permit users to specify their own parameters for scheduling tests
             $newline = "DEVICESCAN -H -m $sender\n";
-            $retval = $file->replace_one_line('/^DEVICESCAN/i', $newline);
+            $retval = $file->replace_one_line_by_pattern('/^DEVICESCAN/i', $newline);
+            $this->restart();
         } catch (File_No_Match_Exception $e) {
-            return FALSE;
+            $retval = $file->add_lines($newline);
+            $this->restart();
         }
     }
 
@@ -516,7 +524,7 @@ class Smart_Monitor extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         try {
-            $file = new File(self::SMARTD_CONFIG);
+            $file = new File(self::SMARTD_CONFIG, TRUE);
             $existingline = $file->lookup_line('/^DEVICESCAN/i');
 
             if ($test) {

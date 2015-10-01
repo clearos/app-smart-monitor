@@ -91,6 +91,7 @@ $graphkeys = array(
 
 //get all drives list
 $drives = $this->smart_monitor->get_drives();
+$rows = array();
 
 // display drive stats
 foreach ($drives as $drive) {
@@ -147,22 +148,24 @@ foreach ($drives as $drive) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Sumary tables
+// Summary tables
 ///////////////////////////////////////////////////////////////////////////////
-if ($rows != NULL) {
+
+if (!empty($rows)) {
     echo summary_table(
         lang('smart_status_title'),
         NULL,
         $headers,
-        $rows
+        $rows,
+        array('id' => 'smart_status_summary', 'responsive' => array(1 => 'none'))
     );
-}
-if ($rows != NULL) {
+
     echo summary_table(
         lang('smart_status_charts'),
         NULL,
         $graphheaders,
-        $graphrows
+        $graphrows,
+        array('id' => 'smart_status_charts')
     );
 }
 

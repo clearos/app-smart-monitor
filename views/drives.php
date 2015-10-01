@@ -7,7 +7,7 @@
  * @package    smart-monitor
  * @subpackage views
  * @author     Tim Burgess <trburgess@gmail.com>
- * @copyright  2012 ClearFoundation
+ * @copyright  2012-2015 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
  * @link       http://www.clearcenter.com/support/documentation/clearos/smart_monitor/
  */
@@ -43,6 +43,7 @@ $this->lang->load('base');
 $headers = array(
     lang('smart_drive'),
     lang('smart_model'),
+    lang('smart_serial'),
     lang('smart_size'),
     lang('smart_health'),
     lang('smart_shorttest')
@@ -76,7 +77,7 @@ foreach ($drives as $drive) {
         } 
         $assessment = $drive['assessment'];
     } else {
-        $item['anchors'] = "";
+        $item['anchors'] = lang('base_not_applicable');
         $test = "---";
         $assessment = "---";
     }
@@ -87,8 +88,9 @@ foreach ($drives as $drive) {
 
     $item['details'] = array(
         'drive' => $name . "<input type='hidden' name='drive' value='$name'>",
-        'model' => "<span data-toggle='tooltip' data-container='body' title='" . $drive['info']['serial'] . "'>" . $drive['info']['device'],
-        'capacity' => $drive['info']['capacity'],
+        'model' => $drive['info']['device'],
+        'serial' => $drive['info']['serial'],
+        'capacity' => $drive['info']['capacity'] . ' ' . lang('base_gigabytes'),
         'health' => $assessment,
         'test' => $test
     );
@@ -97,7 +99,7 @@ foreach ($drives as $drive) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Sumary table
+// Summary table
 ///////////////////////////////////////////////////////////////////////////////
 
 echo form_open('smart_monitor/drives');
@@ -105,7 +107,8 @@ echo summary_table(
     lang('smart_config_title'),
     NULL,
     $headers,
-    $items
+    $items,
+    array('id' => 'smart_drive_summary', 'responsive' => array(1 => 'none', 2 => 'none', 3 => 'none'))
 );
 echo form_close();
 
