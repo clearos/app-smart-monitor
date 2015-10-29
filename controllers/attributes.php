@@ -73,7 +73,7 @@ class Attributes extends ClearOS_Controller
         // Load views
         //-----------
 
-        $options['type'] = 'report';
+        $options['type'] = MY_Page::TYPE_WIDE_CONFIGURATION;
         $this->page->view_form('smart_monitor/attributes', $data, lang('base_settings'), $options);
     }
 }

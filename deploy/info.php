@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'smart_monitor';
-$app['version'] = '2.1.7';
+$app['version'] = '2.1.8';
 $app['release'] = '1';
 $app['vendor'] = 'Tim Burgess <timb80@scm.clearfoundation.com>';
 $app['packager'] = 'Tim Burgess <timb80@scm.clearfoundation.com>';
